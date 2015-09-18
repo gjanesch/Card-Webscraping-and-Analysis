@@ -1,8 +1,15 @@
-Webscraping and Analysis of Pokémon Trading Cards
+# Webscraping and Analysis of Pokémon Trading Cards
+### By: Greg Janesch
+### September 19, 2015
 
-This project is intended to perform a basic analysis of cards in the Pokémon Trading Card Game.  The project code was written in Python 3.4.
 
-## Background: The Pokémon Trading Card Game
+## Background and Justification
+This project is intended to perform a basic analysis of cards in the Pokémon Trading Card Game, as a demonstration of my ability to use Python in multiple ways.  The project code was written in Python 3.4.
+
+To fully understand what this project hopes to accomplish, some background is required.
+
+
+### Background: The Pokémon Trading Card Game
 The Pokémon Trading Card Game (TCG) is a trading card game which forms a portion of the Pokémon franchise.  The mechanics of the TCG attempt to broadly approximate those in the video games, with reasonable changes for the medium.
 
 Cards belong to one of three general categories:
@@ -12,8 +19,9 @@ Cards belong to one of three general categories:
 
 These categories can be further subdivided, as the game has introduced variations or labels for large subsets of cards.  For instance, Stadiums are a subtype of trainer card which introduce a "field effect" that applies to both players, while the TM subtype can be attached to a Pokémon for a single turn in order to give an attack that it could not otherwise have.
 
+![Alakazam, Base Set, card no. 001](http://cdn.bulbagarden.net/upload/9/94/AlakazamBaseSet1.jpg)   ![Fire Energy](http://cdn.bulbagarden.net/upload/a/a5/FireEnergyBaseSet98.jpg)
 
-## Background: Serebii
+### Background: Serebii
 A Pokémon-oriented website, <a href="www.serebii.net">Serebii</a>, attempts to be a comprehensive archive of most facets of the Pokémon franchise.  The information it has is considerable, including listings of all Pokémon cards available.  It is, however, prone to typos and other minor issues.
 
 After inspecting their pages for a few assorted cards (both the raw HTML and browser-rendered version), it was determined that Serebii's organization of the cards' information was regular enough that it would be a good candidate for webscraping.
