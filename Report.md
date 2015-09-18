@@ -17,9 +17,9 @@ Cards belong to one of three general categories:
 * Energy, which are attached to Pokémon to power their attacks.
 * Trainers, which is a broad classification covering a large number of cards designed to affect the flow of the game in various ways.
 
-These categories can be further subdivided, as the game has introduced variations or labels for large subsets of cards.  For instance, Stadiums are a subtype of trainer card which introduce a "field effect" that applies to both players, while the TM subtype can be attached to a Pokémon for a single turn in order to give an attack that it could not otherwise have.
+These categories can be further subdivided, as the game has introduced variations or labels for large subsets of cards.  Trainer cards, in particular, have been subdivided into a few other card types, such as Stadiums (which grant a "field effect" to both players; however, the
 
-![Alakazam, Base Set, card no. 001](http://cdn.bulbagarden.net/upload/9/94/AlakazamBaseSet1.jpg)   ![Fire Energy](http://cdn.bulbagarden.net/upload/a/a5/FireEnergyBaseSet98.jpg)
+![Alakazam, Base Set, card no. 001](http://cdn.bulbagarden.net/upload/9/94/AlakazamBaseSet1.jpg =218x300) ![Defender, Undaunted, card no. 72](http://cdn.bulbagarden.net/upload/c/c6/DefenderUndaunted72.jpg =216x300)  ![Fire Energy](http://cdn.bulbagarden.net/upload/a/a5/FireEnergyBaseSet98.jpg = 215x300)
 
 ### Background: Serebii
 A Pokémon-oriented website, <a href="www.serebii.net">Serebii</a>, attempts to be a comprehensive archive of most facets of the Pokémon franchise.  The information it has is considerable, including listings of all Pokémon cards available.  It is, however, prone to typos and other minor issues.
