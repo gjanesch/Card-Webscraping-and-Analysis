@@ -19,7 +19,7 @@ Cards belong to one of three general categories:
 
 These categories can be further subdivided, as the game has introduced variations or labels for large subsets of cards.  Trainer cards, in particular, have been subdivided into a few other card types, such as Stadiums (which grant a "field effect" to both players; however, the
 
-![Alakazam, Base Set, card no. 001](http://cdn.bulbagarden.net/upload/9/94/AlakazamBaseSet1.jpg =218x300) ![Defender, Undaunted, card no. 72](http://cdn.bulbagarden.net/upload/c/c6/DefenderUndaunted72.jpg =216x300)  ![Fire Energy](http://cdn.bulbagarden.net/upload/a/a5/FireEnergyBaseSet98.jpg = 215x300)
+<img src="http://cdn.bulbagarden.net/upload/9/94/AlakazamBaseSet1.jpg" width="218px" height="300px" /> <img src="http://cdn.bulbagarden.net/upload/c/c6/DefenderUndaunted72.jpg" width="216px" height="300px"/>  <img src="http://cdn.bulbagarden.net/upload/a/a5/FireEnergyBaseSet98.jpg" width="215px" height="300px")
 
 ### Background: Serebii
 A Pokémon-oriented website, <a href="www.serebii.net">Serebii</a>, attempts to be a comprehensive archive of most facets of the Pokémon franchise.  The information it has is considerable, including listings of all Pokémon cards available.  It is, however, prone to typos and other minor issues.
