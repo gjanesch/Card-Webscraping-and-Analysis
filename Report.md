@@ -18,6 +18,7 @@ Cards belong to one of three general categories:
 * Trainers, which is a broad classification covering a large number of cards designed to affect the flow of the game in various ways.
 
 One example of each:
+
 <img src="http://cdn.bulbagarden.net/upload/9/94/AlakazamBaseSet1.jpg" width="218px" height="300px" />  <img src="http://cdn.bulbagarden.net/upload/a/a5/FireEnergyBaseSet98.jpg" width="215px" height="300px" />  <img src="http://cdn.bulbagarden.net/upload/c/c6/DefenderUndaunted72.jpg" width="216px" height="300px"/>
 
 These categories can be further subdivided, as the game has introduced variations or labels for large subsets of cards.  Trainer cards, in particular, have been subdivided into a few other card types, such as Stadiums (which grant a "field effect" to both players) or Technical Machines (which allow Pokémon to use attacks they don't normally use). However, as all such cards still have the word "Trainer" printed on them, and some are re-releases of older cards from before such distinctions, they are all classified here as trainers.
