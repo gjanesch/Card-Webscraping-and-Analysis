@@ -13,9 +13,9 @@ def append_to_file(object, target_file):
     with open(target_file, "a") as file:
         file.write(object + "\n")
 
-def replace_name(text, name):
+def replace_name(text, name, cnt=0):
     replace_text = "this Pokémon"
-    changed_text = re.sub(name, replace_text, text)
+    changed_text = re.sub(re.escape(name), replace_text, text, cnt)
     return changed_text
 
 with open("full_card_list_file","rb") as file:
@@ -25,6 +25,7 @@ attack_text_file = "attack_text.txt"
 ability_text_file = "ability_text.txt"
 trainer_text_file = "trainer_text.txt"
 energy_text_file = "energy_text.txt"
+nn_pokemon_file = "card_texts.csv"
 
 for expansion in full_card_list:
     expansion_no = full_card_list.index(expansion) + 1
@@ -32,6 +33,7 @@ for expansion in full_card_list:
     for card in expansion:
         card_no = str(expansion.index(card) + 1)
         print(expansion_text + ", CARD " + card_no + " of " + str(len(expansion)))
+        print(card.name)
         card_class = type(card).__name__
         if card_class == "TrainerCard":
             append_to_file(card.description, trainer_text_file)
@@ -46,3 +48,13 @@ for expansion in full_card_list:
                 if attack.description:
                     attack_text = replace_name(attack.description, card.name)
                     append_to_file(attack_text, attack_text_file)
+            nn_pokemon = card.nn_card()
+            num_name = len(re.findall(card.name, nn_pokemon))
+            if num_name > 1:
+                nn_pokemon = nn_pokemon[::-1]
+                card_name_reversed = re.escape(card.name[::-1])
+                nn_pokemon = replace_name(nn_pokemon, card_name_reversed, num_name-1)
+                nn_pokemon = nn_pokemon[::-1]
+                nn_pokemon = re.sub("nomékoP siht", "this Pokémon", nn_pokemon)
+            with open(nn_pokemon_file, "a") as file:
+                file.write(nn_pokemon + "\n")

@@ -1,12 +1,12 @@
 # Webscraping and Analysis of Pokémon Trading Cards
 ### By: Greg Janesch
-### September 19, 2015
+### December 29, 2015
 
 
 ## Background and Justification
 This project is intended to perform a basic analysis of cards in the Pokémon Trading Card Game, as a demonstration of my ability to use Python in multiple ways.  The project code was written in Python 3.4.
 
-To fully understand what this project hopes to accomplish, some background is required.
+To fully understand what this project hopes to accomplish, some background is useful.
 
 
 ### Background: The Pokémon Trading Card Game
@@ -35,8 +35,25 @@ In order to store and organize the card data effectively, four custom classes we
 
 Because they are generally quite simple, the EnergyCard and TrainerCard classes only have a few attributes.  Both have <TT>name</TT> and <TT>description</TT> attributes, intended to hold the card name and description of card effects respectively.  EnergyCard also has a boolean <TT>basic</TT> attribute, which has a specific meaning in the TCG (as basic and special energy cards behave and are affected differently).  TrainerCard contains a <TT>subtype</TT> attribute for handling the multitude of variations of trainer cards.
 
-The PokemonCard class, however, stores nine separate attributes as a result of the Pokémon cards' relative mechanical complexity.  These attributes are nearly sufficient to cover the functionality of the card; the only issue remaining is that the card's attacks are more complicated than Python's basic data types can conveniently handle.  As such, the PokemonCardAttack class holds the four data points which define an attack (energy cost, damage, name, and description of effects, if any).
+The PokemonCard class, however, stores nine separate attributes.  These attributes are sufficient to cover the functionality of the card, although the Pokémon cards' attacks require the definition of a PokemonCardAttack class to hold the four data points which define an attack (energy cost, damage, name, and description of effects, if any).
 
+To better illustrate this, consider one of the more famous cards, the Base Set Charizard:
+
+<img src="http://cdn.bulbagarden.net/upload/4/4e/CharizardBaseSet4.jpg" width="212px" height="300px" />
+
+The way the PokemonCard class is set up, the card looks like this:
+
+SPECIES: Charizard
+120 HP
+TYPE: R
+ABILITY: Energy Burn: As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into R Energy for the rest of the turn. This power can't be used if Charizard is Asleep, Confused, or Paralyzed. 
+ATTACK: Fire Spin 
+  ENERGY COST: RRRR 
+  DAMAGE: 100 
+  DESCRIPTION: Discard 2 Energy cards attached to Charizard in order to use this attack.
+WEAKNESSES: W(x2) 
+RESISTANCES: F( -30) 
+RETREAT COST: 3
 
 ## Webscraping
 The website serebii.net maintains descriptions of all cards in the TCG, with individual webpages allotted for individual cards.  The cards' URLs all follow the same general structure:
@@ -214,21 +231,27 @@ This difference can be illustrated by checking how many unique attack names ther
 
 It was discovered that there were 3,713 unique attack names, though only 575 had all of the same descriptions.  The 10 most frequent of these, with descriptions:
 
-| Attack Name | Count | Description |
-| ----------- | ----: | ----------- |
-| Tackle      |  167  |             |
-| Bite        |  107  |             |
-| Scratch     |   87  |             |
-| Slash       |   73  |             |
-| Headbutt    |   69  |             |
-| Pound       |   52  |             |
-| Peck        |   44  |             |
-| Gnaw        |   40  |             |
-| Razor Leaf  |   40  |             |
-| Flare       |   39  |             |
+| Attack Name | Count |             Description |
+| ----------- | ----: | ----------------------- |
+| Tackle      |  167  |                         |
+| Bite        |  107  |                         |
+| Scratch     |   87  |                         |
+| Slash       |   73  |                         |
+| Headbutt    |   69  |                         |
+| Pound       |   52  |                         |
+| Peck        |   44  |                         |
+| Gnaw        |   40  |                         |
+| Razor Leaf  |   40  |                         |
+| Flare       |   39  |                         |
 
 Perhaps unsurprisingly, the top ten attacks do not have any descriptions whatsoever.  Inspection of the ranked_names object reveals that the highest-ranked attack with an actual description is ranked 43rd overall (Bind: Flip a coin.  If heads, the Defending Pokémon is now paralyzed.) and has only 12 instances.
 
-Additionally, eight of the top 10 above are actual attacks in the games (all except Gnaw and Flare). The top six overall are fairly common attacks that are learned by a wide variety of Pokémon in the games.  Presumably, this accounts for their frequency here.
+Additionally, eight of the top 10 above are actual attacks in the games (all except Gnaw and Flare). The top six overall are, in the games, fairly common attacks used by a wide variety of Pokémon.  Presumably, this accounts for their frequency here.
 
 Frequency on this table doesn't mean that they dominate the card descriptions, though.  Combined, the top ten here account for 718 attacks, about 6.6% of all the cards' attacks.  This sort of mirrors the video games, in that there are a handful of attacks which are learned by significant fractions of available Pokémon naturally.  However, there are also a large number of attacks can be "tutored" to Pokémon, either by items or other characters, and many of these are available for a variety of Pokémon.
+
+
+## Generating New Cards with a Recurrent Neural Network
+Inspired <a href="http://www.mtgsalvation.com/forums/creativity/custom-card-creation/612057-generating-magic-cards-using-deep-recurrent-neural">this</a> post, which generated Magic: The Gathering cards using a recurrent neural network (RNN), I attempted to create an RNN which would generate Pokémon cards.  The RNN used here is adapted from code relating to <a href="http://www.wildml.com/2015/10/recurrent-neural-network-tutorial-part-4-implementing-a-grulstm-rnn-with-python-and-theano/">this</a> post.
+
+To start, there was a modification to the 

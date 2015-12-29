@@ -34,8 +34,10 @@ with open("pokemon_species.txt") as file:
 
 ## Get the links for the expansions and promotional sets
 expansion_list = get_expansion_links(BASE_URL, SECTION_EXPANSIONS)
-#promo_list = get_expansion_links(BASE_URL, SECTION_PROMOS)
-#expansion_list.extend(promo_list)
+promo_list = get_expansion_links(BASE_URL, SECTION_PROMOS)
+expansion_list.extend(promo_list)
+
+#expansion_list = [expansion_list[67]]
 
 full_card_list = []
 
@@ -43,7 +45,7 @@ for expansion in expansion_list:
     expansion_cards = []
     
     ## For each expansion, get the list of links to access each card
-    print("NOW WORKING ON EXPANSION: " + expansion[1])
+    print("NOW WORKING ON EXPANSION: " + expansion[1] + " (#{0}/{1})".format(1+expansion_list.index(expansion), len(expansion_list)))
     card_links = get_card_links(expansion[0], BASE_URL)
     
     for link in card_links:
