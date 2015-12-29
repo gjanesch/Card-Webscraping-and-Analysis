@@ -43,16 +43,16 @@ To better illustrate this, consider one of the more famous cards, the Base Set C
 
 The way the PokemonCard class is set up, the card looks like this:
 
-SPECIES: Charizard
-120 HP
-TYPE: R
-ABILITY: Energy Burn: As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into R Energy for the rest of the turn. This power can't be used if Charizard is Asleep, Confused, or Paralyzed. 
-ATTACK: Fire Spin 
-  ENERGY COST: RRRR 
-  DAMAGE: 100 
-  DESCRIPTION: Discard 2 Energy cards attached to Charizard in order to use this attack.
-WEAKNESSES: W(x2) 
-RESISTANCES: F( -30) 
+SPECIES: Charizard  
+120 HP  
+TYPE: R  
+ABILITY: Energy Burn: As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into R Energy for the rest of the turn. This power can't be used if Charizard is Asleep, Confused, or Paralyzed.  
+ATTACK: Fire Spin  
+  ENERGY COST: RRRR  
+  DAMAGE: 100  
+  DESCRIPTION: Discard 2 Energy cards attached to Charizard in order to use this attack.  
+WEAKNESSES: W(x2)  
+RESISTANCES: F( -30)  
 RETREAT COST: 3
 
 ## Webscraping
