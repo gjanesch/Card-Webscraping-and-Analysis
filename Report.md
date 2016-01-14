@@ -123,7 +123,7 @@ The resulting rankings:
 <tr><td style="text-align:right"> 134 </td><td> flip a coin. if tails, this attack does nothing. </td></tr>
 <tr><td style="text-align:right"> 131 </td><td> flip a coin. if heads, the defending pokémon is now confused. </td></tr>
 <tr><td style="text-align:right"> 106 </td><td> the defending pokémon is now poisoned. </td></tr>
-<tr><td style="text-align:right"> 95 </td><td> the defending pokémon can't retreat during your opponent's next turn. </td></tr>
+<tr><td style="text-align:right"> 95 </td><td> the defending pokémon can't retreat during your opponent's next turn.</td><td>
 <tr><td style="text-align:right"> 92 </td><td> this pokémon does 10 damage to itself.  </td></tr>
 <tr><td style="text-align:right"> 88 </td><td> flip 2 coins. this attack does 20 damage times the number of heads. </td></tr>
 <tr><td style="text-align:right"> 73 </td><td> flip a coin. if heads, the defending pokémon is now poisoned. </td></tr>
@@ -132,7 +132,7 @@ The resulting rankings:
 
 There is a lot of coin-based action in these ten descriptions.  Status infliction (confusion, paralysis, sleep, poison) is also quite common, and is often dependent on coin flips.
 
-Note that the 8th and 10th most common descriptions are functionally the same, differing only in how much damage is dealt.  In fact, there are a lot of attacks which function in almost the same manner, but with slight variations in the damage dealt, the number of coins flipped, or which status they inflict.  So we can replace the amount of damage, the inflicted status, and the number of coin flips with dummy strings via regular expressions and see how common these more generalized descriptions are.
+Note that the 8th and 10th most common descriptions are functionally the same, differing only in how much damage is dealt.  In fact, there are a lot of attacks which function in almost the same manner, with only slight variations in the damage dealt, the number of coins flipped, or which status they inflict.  So we can replace the amount of damage, the inflicted status, and the number of coin flips with dummy strings via regular expressions and see how common these more generalized descriptions are.
 
     attack_text_2 = [re.sub("[0-9]{1,2}0 damage|[1-9] damage counter(s)?", "_AMOUNT_ damage", attack) for attack in attack_text]
     attack_text_2 = [re.sub("[0-9]{1,2}0 more damage", "_AMOUNT_ more damage", attack) for attack in attack_text_2]
@@ -148,18 +148,18 @@ Note that the 8th and 10th most common descriptions are functionally the same, d
 
 The new rankings:
 
-| ---: | :-------------------------------------------------------------------------------------------------- |
-|  661 | flip _N_ coins. if heads, the defending pokémon is now _STATUS_.                                    |
-|  448 | flip _N_ coins. this attack does _AMOUNT_ damage times the number of heads.                         |
-|  383 | flip _N_ coins. if heads, this attack does _AMOUNT_ more damage.                                    |
-|  382 | the defending pokémon is now _STATUS_.                                                              |
-|  157 | this pokémon does _AMOUNT_ damage to itself.                                                        |
-|  134 | flip _N_ coins. if tails, this attack does nothing.                                                 |
-|   95 | the defending pokémon can't retreat during your opponent's next turn.                               |
-|   66 | draw a card.                                                                                        |
-|   64 | flip _N_ coins. if tails, this pokémon does _AMOUNT_ damage to itself.                              |
-|   62 | choose 1 of your opponent's pokémon. this attack does _AMOUNT_ damage to that pokémon. (don't apply |
-|      | weakness and resistance for benched pokémon.).                                                      |
+<table>
+<tr><td style="text-align:right"> 661 </td><td> flip _N_ coins. if heads, the defending pokémon is now _STATUS_. </td></tr>
+<tr><td style="text-align:right"> 448 </td><td> flip _N_ coins. this attack does _AMOUNT_ damage times the number of heads. </td></tr>
+<tr><td style="text-align:right"> 383 </td><td> flip _N_ coins. if heads, this attack does _AMOUNT_ more damage. </td></tr>
+<tr><td style="text-align:right"> 382 </td><td> the defending pokémon is now _STATUS_. </td></tr>
+<tr><td style="text-align:right"> 157 </td><td> this pokémon does _AMOUNT_ damage to itself. </td></tr>
+<tr><td style="text-align:right"> 134 </td><td> flip _N_ coins. if tails, this attack does nothing. </td></tr>
+<tr><td style="text-align:right"> 95 </td><td> the defending pokémon can't retreat during your opponent's next turn. </td></tr>
+<tr><td style="text-align:right"> 66 </td><td> draw a card. </td></tr>
+<tr><td style="text-align:right"> 64 </td><td> flip _N_ coins. if tails, this pokémon does _AMOUNT_ damage to itself. </td></tr>
+<tr><td style="text-align:right"> 62 </td><td> choose 1 of your opponent's pokémon. this attack does _AMOUNT_ damage to that pokémon. (don't apply weakness and resistance for benched pokémon.). </td></tr>
+</table>
 
 It's a notable rearrangement, but the bulk of the entries here were on the previous top 10.  In fact, the only entry on this list that didn't appear on the previous one in any form is "flip _N_ coins. if heads, this attack does _AMOUNT_ more damage."
 
