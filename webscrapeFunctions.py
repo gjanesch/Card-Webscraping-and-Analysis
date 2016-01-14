@@ -1,4 +1,4 @@
-### Greg Janesch, updated 08/20/2015
+### Greg Janesch, updated 01/14/2016
 ### Description: a collection of functions intended to scrape all of serebii.net's Pokemon
 ### TCG info
 

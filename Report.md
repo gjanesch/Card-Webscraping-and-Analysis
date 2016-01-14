@@ -1,6 +1,6 @@
 # Webscraping and Analysis of Pokémon Trading Cards
 ### By: Greg Janesch
-### January 11, 2016
+### January 14, 2016
 
 
 ## Background and Justification
@@ -11,8 +11,8 @@ This project is intended to perform an analysis of cards in the Pokémon Trading
 The Pokémon Trading Card Game (TCG) is a large portion of the Pokémon franchise, debuting in 1996 in Japan.  The mechanics of the TCG attempt to broadly approximate those in the video games, though there are reasonable adaptations for the medium.
 
 Cards in the TCG belong to one of three general categories:
-* Pokémon, which do the actual attacking and are at the center (mechanically) of the game.
-* Energy, which are attached to Pokémon to power their attacks.
+* Pokémon, which do the actual attacking and are at the center (mechanically) of the game.  There are several components to them
+* Energy, which are attached to Pokémon to power their attacks.  Energy can be either 'Basic' (they give one of one type's energy and that's it) or 'Special' (anything that has additional effects or gives more than one energy).
 * Trainers, which are a broad class of cards with greatly varying functionality.
 
 One example of each:
@@ -53,7 +53,7 @@ WEAKNESSES: W (x2)
 RESISTANCES: F ( -30) 
 RETREAT COST: 3
 
-Note that there are shorthands used for the energy types.
+Note that there are shorthands used for the energy types (here, 'R' is used for the Fire type).
 
 
 ## Webscraping
@@ -63,13 +63,13 @@ The website serebii.net maintains descriptions of all cards in the TCG, with ind
 
 However, the expansion names don't follow any real pattern, and there is no universal pattern for the card numbers.  
 
-As a result, the webscraping process begins by examining an HTML table on <a href="http://www.serebii.net/card/english.shtml">this</a> page.  The main table on the page lists all of the card expansions and contains links to them.  Once it gathers those links, it goes through the expansions' pages, each of which also has an HTML table on it containing full listings and links for the cards in the expansion.  The scraper gathers up all the links for all the cards in this manner.
+As a result, the webscraping process begins by examining a pair of HTML tables - <a href="http://www.serebii.net/card/english.shtml">one</a> for the main expansions and <a href="http://www.serebii.net/card/engpromo.shtml">one</a> for the promotional sets.  The main tables on the pages lists all of the expansions and contains links to them.  Once it gathers those links, it goes through the expansions' pages, each of which also has an HTML table on it containing full listings and links for the cards in the expansion.  The scraper gathers up all the links for all the cards in this manner.
 
 The next step is then to scrape the pages of the individual cards.  Much like the other pages, the card information is stored in a couple of HTML tables; however, in order to account for some of the shifts in the TCG's card structures - particularly regarding rules about Pokémon variations - these pages are less uniform in their formatting.
 
 The script uses two functions to gather the information needed for processing: <TT>get_card_types()</TT>, which is used to determine whether the target page is describing a Pokémon, an energy, or a trainer card (and, if applicable, which kind of trainer); and <TT>get_card_rows()</TT>, which extracts the rows from the relevant tables for processing.  There are a few cards listed on Serebii which do not have any card types listed; this is presumed to be an error, and inspection reveals that they are all trainer cards, so the program defaults to that classification.
 
-The output of <TT>get_card_types()</TT> is used as a switch, as the functions for turning the HTML into a PokemonCard, EnergyCard, or TrainerCard are separate.  The processing done by <TT>get_trainer()</TT> and <TT>get_energy()</TT> are similar, with the differences lying in the former taking the card type as an argument (for the subtype attribute) and the latter doing a check to see if it is a basic energy or not.  The trainer card structure may not actually contain all of the text, as some of the subtypes have quirks that are too easily missed by the scraper.
+The output of <TT>get_card_types()</TT> is used as a switch, as the functions for turning the HTML into a PokemonCard, EnergyCard, or TrainerCard are separate.  The processing done by <TT>get_trainer()</TT> and <TT>get_energy()</TT> are similar, with the differences lying in the former taking the card type as an argument (for the subtype attribute) and the latter doing a check to see if it is a basic energy or not.  Additionally, the trainer card structure may not actually contain all of the text, as some of the subtypes have quirks that are too easily missed by the scraper.
 
 <TT>get_pokemon()</TT>, however, is trickier.  Because of the varying number of attacks, abilities, and clauses present on cards, the order of operations has to accommodate this by eliminating clauses relating to Pokémon variants (adding to the traits attribute as needed) as well as any empty rows first.  It then works over the first and last couple rows, which hold parts of the card like HP, weaknesses, and retreat cost, since these rows have a constant format and always appear at the start and end of the tables.  The remaining rows are classified as pertaining to either an ability or an attack, and are treated appropriately.
 
@@ -123,7 +123,7 @@ The resulting rankings:
 <tr><td style="text-align:right"> 134 </td><td> flip a coin. if tails, this attack does nothing. </td></tr>
 <tr><td style="text-align:right"> 131 </td><td> flip a coin. if heads, the defending pokémon is now confused. </td></tr>
 <tr><td style="text-align:right"> 106 </td><td> the defending pokémon is now poisoned. </td></tr>
-<tr><td style="text-align:right"> 95 </td><td> the defending pokémon can't retreat during your opponent's next turn.</td><td>
+<tr><td style="text-align:right"> 95 </td><td> the defending pokémon can't retreat during your opponent's next turn.</td></tr>
 <tr><td style="text-align:right"> 92 </td><td> this pokémon does 10 damage to itself.  </td></tr>
 <tr><td style="text-align:right"> 88 </td><td> flip 2 coins. this attack does 20 damage times the number of heads. </td></tr>
 <tr><td style="text-align:right"> 73 </td><td> flip a coin. if heads, the defending pokémon is now poisoned. </td></tr>
@@ -161,13 +161,13 @@ The new rankings:
 <tr><td style="text-align:right"> 62 </td><td> choose 1 of your opponent's pokémon. this attack does _AMOUNT_ damage to that pokémon. (don't apply weakness and resistance for benched pokémon.). </td></tr>
 </table>
 
-It's a notable rearrangement, but the bulk of the entries here were on the previous top 10.  In fact, the only entry on this list that didn't appear on the previous one in any form is "flip _N_ coins. if heads, this attack does _AMOUNT_ more damage."
+The top 10 from the previous listing have now been compressed into the top 6, with four rather different effects now appearing.  Combined, these ten account for 2,452 descriptions, which is only about 26% of all descriptions.
 
 
 ## Analysis: Do Attacks With the Same Name Have the Same Effects?
 In the video games, with very few exceptions, attacks behave the same irrespective of which species of Pokémon is using it.  The TCG does not need to abide by this restriction, though attacks that appear in the games and the card game are likely to behave the same
 
-This difference can be illustrated by checking how many unique attack names there are.  We also employ the regular expressions to 
+This difference can be illustrated by checking how many unique attack names there are.  We also reuse the regular expressions from before to generalize the attack descriptions.
 
     attack_name_descriptions = {}
     for attack in full_attack_list:
@@ -199,7 +199,7 @@ This difference can be illustrated by checking how many unique attack names ther
     
     ranked_names = sorted(SDA_counts, key=SDA_counts.get, reverse=True)
 
-It was discovered that there were 3,923 unique attack names, of which 658 appeared at least twice and all appearances had the same description.  It is likely that at least some of those 658 are from reprints of older cards, but this is not easily testable.  The 10 most frequent of these, with descriptions:
+It was discovered that there were 3,923 unique attack names, of which 765 appeared at least twice and all appearances had the same description.  It is likely that at least some of those 765 are from reprints of older cards, but this is not easily testable.  The 11 most frequent of these (there's a tie for 10th place), with descriptions:
 
 | Attack Name | Count |             Description |
 | ----------- | ----: | ----------------------- |
@@ -209,19 +209,16 @@ It was discovered that there were 3,923 unique attack names, of which 658 appear
 | Slash       |   80  |                         |
 | Headbutt    |   76  |                         |
 | Pound       |   62  |                         |
+| Fury Swipes |   54  | flip _N_ coins. this attack does _AMOUNT_ damage times the number of heads. |
 | Peck        |   52  |                         |
 | Razor Leaf  |   49  |                         |
 | Flare       |   44  |                         |
 | Gnaw        |   44  |                         |
 
-Perhaps unsurprisingly, the top ten attacks do not have any descriptions whatsoever.  Inspection of the ranked_names object reveals that the highest-ranked attack with an actual description is ranked 43rd overall (Bind: Flip a coin.  If heads, the Defending Pokémon is now paralyzed.) and has only 12 instances.
-
-Additionally, eight of the top 10 above are actual attacks in the games (all except Gnaw and Flare). The top six overall are, in the games, fairly common attacks used by a wide variety of Pokémon.  Presumably, this accounts for their frequency here.
-
-Frequency on this table doesn't mean that they dominate the card descriptions, though.  Combined, the top ten here account for 718 attacks, about 6.6% of all the cards' attacks.  This sort of mirrors the video games, in that there are a handful of attacks which are learned by significant fractions of available Pokémon naturally.  However, there are also a large number of attacks can be "tutored" to Pokémon, either by items or other characters, and many of these are available for a variety of Pokémon.
+Of these 11, all but 2 (Flare and Gnaw) are actually from the games.  The top seven are also all attacks which are learned by a variety of Pokémon in the games, largely because they are fairly basic attacks that a lot of Pokémon can physically employ (that is, it's easy for a lot of them to scratch or bite things).  The lack of descriptions reflects this somewhat - while Bite, Slash, Headbutt, and Razor Leaf all have additional effects in the games, the TCG doesn't really have the mechanics to transfer them over.  Fury Swipes, the only one in this list with a description, functions as close as possible to the video games, where it lands two to five hits (the number is randomly decided) of constant power.
 
 
 ## Generating New Cards with a Recurrent Neural Network
 Inspired <a href="http://www.mtgsalvation.com/forums/creativity/custom-card-creation/612057-generating-magic-cards-using-deep-recurrent-neural">this</a> post, which generated Magic: The Gathering cards using a recurrent neural network (RNN), I attempted to create an RNN which would generate Pokémon cards.  The RNN used here is adapted from code relating to <a href="http://www.wildml.com/2015/10/recurrent-neural-network-tutorial-part-4-implementing-a-grulstm-rnn-with-python-and-theano/">this</a> post.
 
-To start, slightly modified versions of __repr__() for both PokemonCard and PokemonCardAttack were created to create a format better suited for the neural network.  There are two reasons for this: first of all, the tokenizer (nltk.word_tokenize()) does not split words on slashes, meaning that the energy costs would be read as single blocks of text rather than a delimited sequence; and second, semicolons were used instead of the newline character in order to get nltk.word_tokenize() to acknowledge it. The tokenizer does split on semicolons, meaning it counts them as words, but since they don't otherwise appear in PokémonCard text, this isn't really an issue.
+To start, slightly modified versions of __repr__() for both PokemonCard and PokemonCardAttack were created to create a format better suited for the neural network.  There are two reasons for this.  First, the tokenizer (<TT>nltk.word_tokenize()</TT>) does not split words on slashes, meaning that the energy costs would be read as single words rather than a delimited sequence of energy types. and second, semicolons were used instead of the newline character in order to get nltk.word_tokenize() to acknowledge it. The tokenizer does split on semicolons, meaning it counts them as words, but since they don't otherwise appear in PokémonCard text, this isn't really an issue.

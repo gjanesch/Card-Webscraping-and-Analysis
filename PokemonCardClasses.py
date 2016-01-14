@@ -1,4 +1,4 @@
-### Greg Janesch, updated 08/10/15
+### Greg Janesch, updated 01/14/2016
 ### Description: Defines four custom object classes used for storing information about a card in the
 ### Pokemon Trading Card Game.
 import re

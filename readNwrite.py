@@ -1,4 +1,4 @@
-### Greg Janesch, updated 08/27/2015
+### Greg Janesch, updated 01/14/2016
 ### Description: Takes the list of Pokémon cards, extracts the text text for attacks, abilities,
 ### trainer cards, and energy cards, and writes them to specified, respective files.
 
