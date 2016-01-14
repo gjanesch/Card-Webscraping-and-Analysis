@@ -21,6 +21,7 @@ def replace_name(text, name, cnt=0):
 with open("full_card_list_file","rb") as file:
     full_card_list = pickle.load(file)
 
+
 attack_text_file = "attack_text.txt"
 ability_text_file = "ability_text.txt"
 trainer_text_file = "trainer_text.txt"
@@ -48,13 +49,22 @@ for expansion in full_card_list:
                 if attack.description:
                     attack_text = replace_name(attack.description, card.name)
                     append_to_file(attack_text, attack_text_file)
-            nn_pokemon = card.nn_card()
-            num_name = len(re.findall(card.name, nn_pokemon))
-            if num_name > 1:
-                nn_pokemon = nn_pokemon[::-1]
-                card_name_reversed = re.escape(card.name[::-1])
-                nn_pokemon = replace_name(nn_pokemon, card_name_reversed, num_name-1)
-                nn_pokemon = nn_pokemon[::-1]
-                nn_pokemon = re.sub("nomékoP siht", "this Pokémon", nn_pokemon)
+            
             with open(nn_pokemon_file, "a") as file:
-                file.write(nn_pokemon + "\n")
+                file.write(card.nn_card() + "\n")
+
+
+## Change up the 
+with open("card_texts.csv", 'r') as f:
+    card_texts = f.readlines()
+
+with open("pokemon_species.txt") as g:
+    pokemon_species = g.readlines()
+
+pokemon_species = [species.strip() for species in pokemon_species]
+
+for mon in pokemon_species:
+    card_texts = [re.sub(mon, "_othermon_", tex) for tex in card_texts]
+
+with open("card_texts2.csv", 'w') as q:
+    q.writelines(card_texts)

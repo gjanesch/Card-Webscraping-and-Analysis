@@ -1,7 +1,7 @@
 ### Greg Janesch, updated 08/10/15
 ### Description: Defines four custom object classes used for storing information about a card in the
 ### Pokemon Trading Card Game.
-
+import re
 
 ### Class intended to be used for Pokemon Cards
 class PokemonCard():
@@ -18,20 +18,18 @@ class PokemonCard():
         self.retreat_cost = int()
     
     def __repr__(self):
-        #output = "  SPECIES: {0}\n  ADDITIONAL TRAITS: {1}\n   {2} HP\n   {3} TYPE\n"
-        #output = output.format(self.name, str(self.traits), self.HP, "".join(self.type))
-        output = "  SPECIES: {0}\n   {1} HP\n   TYPE: {2}\n"
-        output = output.format(self.name, self.HP, "".join(self.type))
+        output = "  CARD NAME: {0}\n   {1} HP\n   {2} TYPE \n"
+        output = output.format(self.name, self.HP, "/".join(self.type))
         for ability, description in self.abilities.items():
             output += "ABILITY: {0}: {1} \n".format(ability, description)
         for attack in self.attacks:
             output += "  " + str(attack) + "\n"
         output += "  WEAKNESSES: "
         for weakness, adjust in self.weaknesses.items():
-            output += "{0}({1}) ".format(weakness, adjust)
+            output += "{0} ({1}) ".format(weakness, adjust)
         output += "\n  RESISTANCES: "
         for resistance, adjust in self.resistances.items():
-            output += "{0}({1}) ".format(resistance, adjust)
+            output += "{0} ({1}) ".format(resistance, adjust)
         output += "\n  RETREAT COST: {0}".format(self.retreat_cost)
         return(output)
 
@@ -45,16 +43,18 @@ class PokemonCard():
     ## This is an alternate __repr__() function to output the card text, intended to be
     ## used for the neural network code
     def nn_card(self):
-        output = "  CARDNAME: {0}; {1} HP; {2} TYPE; "
-        output = output.format(self.name, self.HP, " / ".join(self.type))
+        output = "{0} HP; {1} TYPE; "
+        output = output.format(self.HP, " / ".join(self.type))
         ability_num = 0
         attack_num = 0
         for ability, description in self.abilities.items():
+            descript = re.sub(re.escape(ability), "of this", description)
             ability_num += 1
-            output += "ABILITY{0}: {1};".format(ability_num, description)
+            output += "ABILITY{0}: {1};".format(ability_num, descript)
         for attack in self.attacks:
             attack_num += 1
             output += "  " + attack.nn_attack(attack_num) + "; "
+        output = re.sub(self.name, "this pokémon", output)
         output += "  WEAKNESSES: "
         for weakness, adjust in self.weaknesses.items():
             output += "{0}({1}) ".format(weakness, adjust)
@@ -62,6 +62,9 @@ class PokemonCard():
         for resistance, adjust in self.resistances.items():
             output += "{0}({1}) ".format(resistance, adjust)
         output += ";  RETREAT COST: {0}".format(self.retreat_cost)
+        
+        #output = "  CARDNAME: {0}; ".format(self.name) + output
+        
         return(output)
       
 
@@ -76,8 +79,8 @@ class PokemonCardAttack():
         self.description = str()
     
     def __repr__(self):
-        output = "ATTACK: {0} \n    ENERGY COST: {1} \n    DAMAGE: {2} \n    DESCRIPTION: {3}"
-        output = output.format(self.attack_name, "".join(self.energy_cost), self.base_damage, self.description)
+        output = "ATTACK: {0} \n    COSTS {1} \n    {2} DAMAGE \n    DESCRIPTION: {3}"
+        output = output.format(self.attack_name, "/".join(self.energy_cost), self.base_damage, self.description)
         return output
 
     def nn_attack(self, num):

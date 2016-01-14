@@ -60,10 +60,15 @@ top_ten_attacks = attack_counter.most_common(10)
 top_ten_list = [txt.strip()+" ("+str(cntr) + ")\n" for txt,cntr in top_ten_attacks]
 
 
-## Part 1c: Check for attack descriptions, see if replacing the damage done with a dummy string changes anything
+## Part 1c: Check for attack descriptions, see if replacing the damage/number of coins/status with dummy strings changes anything
 attack_text_2 = [re.sub("[0-9]{1,2}0 damage|[1-9] damage counter(s)?", "_AMOUNT_ damage", attack) for attack in attack_text]
 attack_text_2 = [re.sub("( _AMOUNT_ damage plus)? [0-9]{1,2}0 more damage", " _AMOUNT_ more damage", attack) for attack in attack_text_2]
 attack_text_2 = [re.sub("flip [a1-9] coin(s)?", "flip _N_ coins", attack) for attack in attack_text_2]
+
+special_conditions = ["asleep", "burned", "confused", "paralyzed", "poisoned"]
+for status in special_conditions:
+    attack_text_2 = [re.sub(status, "_STATUS_", attack) for attack in attack_text_2]
+
 attack_counter_2 = Counter(attack_text_2)
 top_ten_attacks_2 = attack_counter_2.most_common(10)
 top_ten_list_2 = [txt.strip()+" ("+str(cntr) + ")\n" for txt,cntr in top_ten_attacks_2]
@@ -80,7 +85,7 @@ with open(TARGET_FILE, "a") as file:
         file.write(item)
     file.write("\n")
 
-    file.write("Top 10 descriptions with generic damage strings: \n")
+    file.write("Top 10 descriptions with generic damage/coin flips/status: \n")
     for item in top_ten_list_2:
         file.write(item)
     file.write("\n \n")
@@ -92,14 +97,14 @@ with open(TARGET_FILE, "a") as file:
 attack_name_descriptions = {}
 for attack in full_attack_list:
     name = attack.attack_name
-    description = attack.description
+    description = attack.description.lower()
     description = re.sub("[0-9]{1,2}0 damage|[1-9] damage counter(s)?", "_AMOUNT_ damage", description)
     description = re.sub("[0-9]{1,2}0 more damage", "_AMOUNT_ more damage", description)
     description = re.sub("flip [a1-9] coin(s)?", "flip _N_ coins", description)
     if name in attack_name_descriptions:
-        attack_name_descriptions[name].append(attack.description)
+        attack_name_descriptions[name].append(description)
     else:
-        attack_name_descriptions[name] = [attack.description]
+        attack_name_descriptions[name] = [description]
 
 num_unique_names = len(attack_name_descriptions)
 

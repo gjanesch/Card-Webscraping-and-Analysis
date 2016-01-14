@@ -150,7 +150,6 @@ def get_pokemon(pokemon, energy_dict, card_types):
     HOLON_CLAUSE2a = "You may attach this as an Energy card from your hand to 1 of your Pokémon. While attached, this card is a Special Energy card and provides  Energy."
     HOLON_CLAUSE2b = "You may attach this as an Energy card from your hand to 1 of your Pokémon. While attached, this card is a Special Energy card and provides C Energy."
     ARCEUS_CLAUSE = "You may have any number of Arceus cards in your deck"
-    BREAK_CLAUSE = "BREAK retains the attacks, Abilities, Weakness, Resistance, and Retreat Cost of its previous Evolution."
     
     pokemon_card = PokemonCard()
     
@@ -181,7 +180,7 @@ def get_pokemon(pokemon, energy_dict, card_types):
         elif row_text.endswith("Once you have both cards, place both on your Bench"):
             pass
         elif row_text.endswith("BREAK retains the attacks, Abilities, Weakness, Resistance, and Retreat Cost of its previous Evolution."):
-            pass
+            pokemon_card.traits.append("BREAK")
         elif not row_text == "":
             pokemon_rows.append(row)
     
