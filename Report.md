@@ -117,17 +117,18 @@ To determine how many totally unique descriptions there are, not counting attack
 
 The resulting rankings:
 
-|----:|:----------------------------------------------------------------------|
-| 377 |flip a coin. if heads, the defending pokémon is now paralyzed.         |
-| 180 |the defending pokémon is now asleep.                                   |
-| 134 |flip a coin. if tails, this attack does nothing.                       |
-| 131 |flip a coin. if heads, the defending pokémon is now confused.          |
-| 106 |the defending pokémon is now poisoned.                                 |
-|  95 |the defending pokémon can't retreat during your opponent's next turn.  |
-|  92 |this pokémon does 10 damage to itself.                                 |
-|  88 |flip 2 coins. this attack does 20 damage times the number of heads.    |
-|  73 |flip a coin. if heads, the defending pokémon is now poisoned.          |
-|  69 |flip 2 coins. this attack does 10 damage times the number of heads.    |
+<table>
+<tr><td style="text-align:right"> 377 </td><td> flip a coin. if heads, the defending pokémon is now paralyzed. </td></tr>
+<tr><td style="text-align:right"> 180 </td><td> the defending pokémon is now asleep. </td></tr>
+<tr><td style="text-align:right"> 134 </td><td> flip a coin. if tails, this attack does nothing. </td></tr>
+<tr><td style="text-align:right"> 131 </td><td> flip a coin. if heads, the defending pokémon is now confused. </td></tr>
+<tr><td style="text-align:right"> 106 </td><td> the defending pokémon is now poisoned. </td></tr>
+<tr><td style="text-align:right"> 95 </td><td> the defending pokémon can't retreat during your opponent's next turn. </td></tr>
+<tr><td style="text-align:right"> 92 </td><td> this pokémon does 10 damage to itself.  </td></tr>
+<tr><td style="text-align:right"> 88 </td><td> flip 2 coins. this attack does 20 damage times the number of heads. </td></tr>
+<tr><td style="text-align:right"> 73 </td><td> flip a coin. if heads, the defending pokémon is now poisoned. </td></tr>
+<tr><td style="text-align:right"> 69 </td><td> flip 2 coins. this attack does 10 damage times the number of heads. </td></tr>
+</table>
 
 There is a lot of coin-based action in these ten descriptions.  Status infliction (confusion, paralysis, sleep, poison) is also quite common, and is often dependent on coin flips.
 
@@ -147,18 +148,18 @@ Note that the 8th and 10th most common descriptions are functionally the same, d
 
 The new rankings:
 
-| --: | :-------------------------------------------------------------------------------------------------- |
-| 661 | flip _N_ coins. if heads, the defending pokémon is now _STATUS_.                                    |
-| 448 | flip _N_ coins. this attack does _AMOUNT_ damage times the number of heads.                         |
-| 383 | flip _N_ coins. if heads, this attack does _AMOUNT_ more damage.                                    |
-| 382 | the defending pokémon is now _STATUS_.                                                              |
-| 157 | this pokémon does _AMOUNT_ damage to itself.                                                        |
-| 134 | flip _N_ coins. if tails, this attack does nothing.                                                 |
-|  95 | the defending pokémon can't retreat during your opponent's next turn.                               |
-|  66 | draw a card.                                                                                        |
-|  64 | flip _N_ coins. if tails, this pokémon does _AMOUNT_ damage to itself.                              |
-|  62 | choose 1 of your opponent's pokémon. this attack does _AMOUNT_ damage to that pokémon. (don't apply |
-|     | weakness and resistance for benched pokémon.).                                                      |
+| ---: | :-------------------------------------------------------------------------------------------------- |
+|  661 | flip _N_ coins. if heads, the defending pokémon is now _STATUS_.                                    |
+|  448 | flip _N_ coins. this attack does _AMOUNT_ damage times the number of heads.                         |
+|  383 | flip _N_ coins. if heads, this attack does _AMOUNT_ more damage.                                    |
+|  382 | the defending pokémon is now _STATUS_.                                                              |
+|  157 | this pokémon does _AMOUNT_ damage to itself.                                                        |
+|  134 | flip _N_ coins. if tails, this attack does nothing.                                                 |
+|   95 | the defending pokémon can't retreat during your opponent's next turn.                               |
+|   66 | draw a card.                                                                                        |
+|   64 | flip _N_ coins. if tails, this pokémon does _AMOUNT_ damage to itself.                              |
+|   62 | choose 1 of your opponent's pokémon. this attack does _AMOUNT_ damage to that pokémon. (don't apply |
+|      | weakness and resistance for benched pokémon.).                                                      |
 
 It's a notable rearrangement, but the bulk of the entries here were on the previous top 10.  In fact, the only entry on this list that didn't appear on the previous one in any form is "flip _N_ coins. if heads, this attack does _AMOUNT_ more damage."
 
