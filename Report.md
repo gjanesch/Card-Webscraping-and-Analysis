@@ -117,7 +117,7 @@ To determine how many totally unique descriptions there are, not counting attack
 
 The resulting rankings:
 
-| --: | :-------------------------------------------------------------------- |
+|----:|:----------------------------------------------------------------------|
 | 377 |flip a coin. if heads, the defending pokémon is now paralyzed.         |
 | 180 |the defending pokémon is now asleep.                                   |
 | 134 |flip a coin. if tails, this attack does nothing.                       |
