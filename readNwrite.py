@@ -17,6 +17,7 @@ def replace_name(text, name, cnt=0):
     replace_text = "this Pokémon"
     changed_text = re.sub(re.escape(name), replace_text, text, cnt)
     return changed_text
+    #return text.replace(name, "this Pokémon")
 
 with open("full_card_list_file","rb") as file:
     full_card_list = pickle.load(file)
@@ -42,19 +43,22 @@ for expansion in full_card_list:
             append_to_file(card.description, energy_text_file)
         elif card_class == "PokemonCard":
             for ability in card.abilities:
-                ability_text = replace_name(card.abilities[ability], card.name)
+                ability_text = card.abilities[ability].replace(card.name, "this Pokémon")
+                #ability_text = replace_name(card.abilities[ability], card.name)
                 if ability_text:
                     append_to_file(ability_text, ability_text_file)
             for attack in card.attacks:
                 if attack.description:
-                    attack_text = replace_name(attack.description, card.name)
+                    attack_text = attack.description.replace(card.name, "this Pokémon")
+                    #attack_text = replace_name(attack.description, card.name)
                     append_to_file(attack_text, attack_text_file)
             
             with open(nn_pokemon_file, "a") as file:
                 file.write(card.nn_card() + "\n")
 
 
-## Change up the 
+## Sometimes other Pokémon species get mentioned in the card texts; this replaces those
+## with a dummy word to try and reduce the vocabulary size.
 with open("card_texts.csv", 'r') as f:
     card_texts = f.readlines()
 
@@ -64,7 +68,7 @@ with open("pokemon_species.txt") as g:
 pokemon_species = [species.strip() for species in pokemon_species]
 
 for mon in pokemon_species:
-    card_texts = [re.sub(mon, "_othermon_", tex) for tex in card_texts]
+    card_texts = [text.replace(mon, "othermon") for text in card_texts]
 
 with open("card_texts2.csv", 'w') as q:
     q.writelines(card_texts)

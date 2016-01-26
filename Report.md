@@ -1,6 +1,6 @@
 # Webscraping and Analysis of Pokémon Trading Cards
 ### By: Greg Janesch
-### January 14, 2016
+### January 25, 2016
 
 
 ## Background and Justification
@@ -8,10 +8,10 @@ This project is intended to perform an analysis of cards in the Pokémon Trading
 
 
 ### Background: The Pokémon Trading Card Game
-The Pokémon Trading Card Game (TCG) is a large portion of the Pokémon franchise, debuting in 1996 in Japan.  The mechanics of the TCG attempt to broadly approximate those in the video games, though there are reasonable adaptations for the medium.
+The Pokémon Trading Card Game (TCG) is a large portion of the Pokémon franchise, debuting in 1996 in Japan.  The mechanics of the TCG attempt to approximate those in the video games with there are reasonable adaptations for the medium.
 
 Cards in the TCG belong to one of three general categories:
-* Pokémon, which do the actual attacking and are at the center (mechanically) of the game.  There are several components to them
+* Pokémon, which do the actual attacking and are at the center of the game.  As a result, they are the most mechanically complex cards.
 * Energy, which are attached to Pokémon to power their attacks.  Energy can be either 'Basic' (they give one of one type's energy and that's it) or 'Special' (anything that has additional effects or gives more than one energy).
 * Trainers, which are a broad class of cards with greatly varying functionality.
 
@@ -33,7 +33,16 @@ In order to store and organize the card data, four custom classes were created -
 
 Energy and trainer cards are relatively simple in terms of how they are represented.  Energy cards can be characterized by the energy they provide, and whether or not they have additional effects; ones that do have additional effects are called 'Special' energy while the remainder are called 'Basic' energy.  Trainers can be characterized by their description text and which subtype of trainer cards they belong to (older cards before such distinctions are just given the subtype of 'trainer').
 
-The PokemonCard class, however, is much more complex.  All cards have a few elements in common - hit points (HP), card type, weaknesses and/or resistances to other types, a retreat cost (energy that has to be discarded to move that card to the sidelines), and other things.  All but a very few cards have attacks, but the attacks themselves are complicated enough that defining a PokemonCardAttack class streamlines the representations.
+The PokemonCard class, however, is much more complex.  The class defines a full nine attributes for these cards:
+* Card name
+* Traits (characteristics of the card which sometimes bring additional effects; defined for convenience's sake, but are unused otherwise)
+* Hit points (HP)
+* Card type (usually influences types of energy used; may also effect how other cards are damaged)
+* Abilities (optional actions that this card lets the player take; typically once per turn) 
+* Attacks (the main method of damaging other cards, though they do other things)
+* Weaknesses (types that this card takes additional damage from)
+* Resistances (types that this card takes reduced damage from)
+* Retreat cost (number of energy needed to discard in order to move the card to the sidelines)
 
 To better illustrate this, consider one of the more famous cards, the Base Set Charizard:
 
@@ -218,7 +227,49 @@ It was discovered that there were 3,923 unique attack names, of which 765 appear
 Of these 11, all but 2 (Flare and Gnaw) are actually from the games.  The top seven are also all attacks which are learned by a variety of Pokémon in the games, largely because they are fairly basic attacks that a lot of Pokémon can physically employ (that is, it's easy for a lot of them to scratch or bite things).  The lack of descriptions reflects this somewhat - while Bite, Slash, Headbutt, and Razor Leaf all have additional effects in the games, the TCG doesn't really have the mechanics to transfer them over.  Fury Swipes, the only one in this list with a description, functions as close as possible to the video games, where it lands two to five hits (the number is randomly decided) of constant power.
 
 
-## Generating New Cards with a Recurrent Neural Network
-Inspired <a href="http://www.mtgsalvation.com/forums/creativity/custom-card-creation/612057-generating-magic-cards-using-deep-recurrent-neural">this</a> post, which generated Magic: The Gathering cards using a recurrent neural network (RNN), I attempted to create an RNN which would generate Pokémon cards.  The RNN used here is adapted from code relating to <a href="http://www.wildml.com/2015/10/recurrent-neural-network-tutorial-part-4-implementing-a-grulstm-rnn-with-python-and-theano/">this</a> post.
+## Attempting to Generate New Cards with a Recurrent Neural Network
+Inspired <a href="http://www.mtgsalvation.com/forums/creativity/custom-card-creation/612057-generating-magic-cards-using-deep-recurrent-neural">this</a> post, which generated Magic: The Gathering cards using a recurrent neural network (RNN), I attempted to create an RNN which would generate Pokémon cards.  The RNN used here is a slightly modified version of code from <a href="http://www.wildml.com/2015/10/recurrent-neural-network-tutorial-part-4-implementing-a-grulstm-rnn-with-python-and-theano/">this</a> post.
 
-To start, slightly modified versions of __repr__() for both PokemonCard and PokemonCardAttack were created to create a format better suited for the neural network.  There are two reasons for this.  First, the tokenizer (<TT>nltk.word_tokenize()</TT>) does not split words on slashes, meaning that the energy costs would be read as single words rather than a delimited sequence of energy types. and second, semicolons were used instead of the newline character in order to get nltk.word_tokenize() to acknowledge it. The tokenizer does split on semicolons, meaning it counts them as words, but since they don't otherwise appear in PokémonCard text, this isn't really an issue.
+The primary question when setting this up was "How should the Pokémon cards' representations be modified in order to improve the network's ability to identify and replicate the structure?"  If you examine the text version of the card from earlier, you'll notice that the output is already fairly structured.  However, several modifications had to made in order to prepare the text.
+
+First was the substitution of a separate newline character.  In the original, the normal carriage return was used.  But the new version would be run through the word tokenizer from Python's <TT>nltk</TT> package, which would simply strip them out.  Since much of the card text doesn't use punctuation or other useful delimiting characters, the pound sign "#" was used in place of the newline character.  This character is recognized by <TT>nltk.word_tokenize()</TT>, and does not appear elsewhere in the text of any Pokémon card, making it well-suited to defining structure.
+
+Additionally, the tokenizer does not split on forward slashes, meaning that the energy costs would be read as single words rather than a delimited sequence of energy types - e.g., an attack that costs four Fire energy would normally be represented as "F/F/F/F" but interpreted as a single word, so the neural network won't try to learn any structure.  This was solved by just adding spaces to the energy costs, so "F/F/F/F" would now be "F / F / F / F".
+
+Finally, measures were taken to cut the vocabulary of the cards.  The biggest way to do this was by stripping the names of attacks and abilities from the cards, as they are almost purely for flavor.  Except for a very few instances (like the Jungle set Scyther card which has one attack of which boosts the damage of the other), attack names are totally ignored by the game mechanics, while ability names are ignored apart from when they appear in their own descriptions (this case was handled with substituting "of this" for the ability name into the description, which works for the context of most of the cards).
+
+It was ultimately noted that the cards' names themselves could be removed without losing any serious information or structure.  Since there are over 700 species of Pokémon at this time, removing the card names and the few instances of cards referencing totally different species cut the vocabulary by a great deal.
+
+All of the vocabulary cutting measures reduced the vocabulary size from about 4500 to just under 1000, which both kept the cards simpler and allowed the network to be trained faster.
+
+As an example, the modified version for the Charizard card from before would be:
+
+120 HP # R TYPE # ABILITY1: As often as you like during your turn (before your attack), you may turn all Energy attached to this pokémon into R Energy for the rest of the turn. This power can't be used if this pokémon is Asleep, Confused, or Paralyzed. #  ATTACK1:  COSTS R / R / R / R,  100 DAMAGE,  DESCRIPTION: Discard 2 Energy cards attached to this pokémon in order to use this attack. # #   WEAKNESSES: W(x2) #  RESISTANCES: F( -30) #  RETREAT COST: 3
+
+These output texts were then fed into the neural network.  Due to the relative age of the computer the training was done on, the training process only iterated over the full list of cards twice; despite this, the results are, for the most part, structurally accurate.  The evolution of the network is illustrated by the training function, which would occasionally output several cards using the partly trained network.  A record of this is in the "Terminal Saved Output.txt" file in this repository.
+
+A sample of ten generated cards from the final version of the network:
+
+100 hp # w type # attack1 : costs g / f / c 30 damage description : # # attack2 : costs f / c / c 40 damage description : flip a coin . if heads the defending pokémon is now confused . # # weaknesses : f ( +20 ) # resistances : # retreat cost : 2
+
+60 hp # e type # attack1 : costs c 10 damage description : # # attack2 : costs f / c 20 damage description : flip a coin . if heads during your opponent 's next turn any damage done to this pokémon by attack is reduced . # # weaknesses : k ( x2 ) # resistances : f ( -20 ) # retreat cost : 1
+
+90 hp # g type # ability1 : once during your turn ( before your attack ) you may search your deck for pokémon discard up to before cards into your hand . this power ca n't be used if this pokémon is affected by a special condition . # attack1 : costs c / c / c f damage description : does 10 damage times the number of attack othermon in your hand . # # weaknesses : p ( x2 ) # resistances : # retreat cost : 1
+
+90 hp # k type # attack1 : costs k basic damage description : flip a coin . if heads the defending pokémon is now paralyzed . # # attack2 : costs g / c / c 30 damage description : flip a coin . if each opponent discard a bench . # # weaknesses : p ( x2 ) # resistances : f ( -30 ) # retreat cost : 1
+
+80 hp # w type # attack1 : costs w / e / c of damage description : this attack 's damage is n't affected by resistance . # # attack2 : costs g / c / c 50 damage description : the defending pokémon is now poisoned . # # weaknesses : p ( +30 ) # resistances : # retreat cost : 2
+
+90 hp # p type # attack1 : costs p / c / c 40 damage description : remove 1 damage counter from 20 . you ca n't 20 damage in this way # # weaknesses : p ( x2 ) # resistances : # retreat cost : 2
+
+your opponent 's active pokémon is now discard energy attached to it # # attack2 : costs f / e / c / opponent description : flip 2 coins . this attack does 30 damage to 1 of this pokémon and this pokémon is now do and more damage . # # weaknesses : p ( w ) # resistances : # retreat cost : 3
+
+80 hp # r type # attack1 : costs c / c / c 120 damage description : flip a coin . if tails this attack does nothing . # # weaknesses : f ( x2 ) # resistances : p ( -30 ) # retreat cost : 3
+
+are hp # e type # attack1 : costs p / c turn damage description : you may search your discard pile for 2 k energy 0 as of your confused . # # weaknesses : e ( x2 ) # resistances : # retreat cost : 1
+
+50 hp # g type # attack1 : costs p 10 damage description : this attack 's damage is n't affected by resistance . # # weaknesses : g ( +10 ) # resistances : e ( -30 ) # retreat cost : 1
+
+Obviously, the network is still far from perfect.  However, it does have most of the card structure down, and many of the attack and ability descriptions are reasonably coherent.  Its depiction of weaknesses and resistances is almost totally accurate as well.
+
+Interestingly, it has also sort of learned a fact of the way the energy costs are arranged.  Many attacks require energy that is the same type as the card, but also use colorless energy (abbreviated to 'c' here) as a placeholder for any energy type.  It is always arranged so that the colorless energy is last - for instance, an attack with one fire and two colorless energy would always be arranged 'f / c / c'.  The network seems to have learned that much, though it does not do a good job of keeping the type of the non-colorless cost the same as the card type.

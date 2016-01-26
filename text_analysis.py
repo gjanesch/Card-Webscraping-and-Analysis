@@ -33,7 +33,8 @@ for expansion in full_card_list:
     for card in expansion:
         if type(card).__name__ == "PokemonCard":
             for attack in card.attacks:
-                attack.description = replace_name(attack.description, card.name)
+                attack.description = attack.description.replace(card.name, "this Pokémon")
+                #attack.description = replace_name(attack.description, card.name)
                 if attack.description and not attack.description[-1] == ".":
                     attack.description += "."
                 full_attack_list.append(attack)
@@ -67,7 +68,8 @@ attack_text_2 = [re.sub("flip [a1-9] coin(s)?", "flip _N_ coins", attack) for at
 
 special_conditions = ["asleep", "burned", "confused", "paralyzed", "poisoned"]
 for status in special_conditions:
-    attack_text_2 = [re.sub(status, "_STATUS_", attack) for attack in attack_text_2]
+    #attack_text_2 = [re.sub(status, "_STATUS_", attack) for attack in attack_text_2]
+    attack_text_2 = [attack.replace(status, "_STATUS_") for attack in attack_text_2]
 
 attack_counter_2 = Counter(attack_text_2)
 top_ten_attacks_2 = attack_counter_2.most_common(10)

@@ -43,27 +43,27 @@ class PokemonCard():
     ## This is an alternate __repr__() function to output the card text, intended to be
     ## used for the neural network code
     def nn_card(self):
-        output = "{0} HP; {1} TYPE; "
+        output = "{0} HP # {1} TYPE # "
         output = output.format(self.HP, " / ".join(self.type))
         ability_num = 0
         attack_num = 0
         for ability, description in self.abilities.items():
-            descript = re.sub(re.escape(ability), "of this", description)
+            descript = description.replace(ability, "of this")
             ability_num += 1
-            output += "ABILITY{0}: {1};".format(ability_num, descript)
+            output += "ABILITY{0}: {1} #".format(ability_num, descript)
         for attack in self.attacks:
             attack_num += 1
-            output += "  " + attack.nn_attack(attack_num) + "; "
-        output = re.sub(self.name, "this pokémon", output)
+            output += "  " + attack.nn_attack(attack_num) + " # "
+        output = output.replace(self.name, "this pokémon")
         output += "  WEAKNESSES: "
         for weakness, adjust in self.weaknesses.items():
             output += "{0}({1}) ".format(weakness, adjust)
-        output += ";  RESISTANCES: "
+        output += "#  RESISTANCES: "
         for resistance, adjust in self.resistances.items():
             output += "{0}({1}) ".format(resistance, adjust)
-        output += ";  RETREAT COST: {0}".format(self.retreat_cost)
+        output += "#  RETREAT COST: {0}".format(self.retreat_cost)
         
-        #output = "  CARDNAME: {0}; ".format(self.name) + output
+        #output = "CARDNAME: {0} # ".format(self.name) + output
         
         return(output)
       
@@ -84,7 +84,7 @@ class PokemonCardAttack():
         return output
 
     def nn_attack(self, num):
-        output = "ATTACK{0}:  COSTS {1},  {2} DAMAGE,  DESCRIPTION: {3};"
+        output = "ATTACK{0}:  COSTS {1},  {2} DAMAGE,  DESCRIPTION: {3} #"
         output = output.format(num, " / ".join(self.energy_cost), self.base_damage, self.description)
         return output
 
