@@ -273,3 +273,9 @@ are hp # e type # attack1 : costs p / c turn damage description : you may search
 Obviously, the network is still far from perfect.  However, it does have most of the card structure down, and many of the attack and ability descriptions are reasonably coherent.  Its depiction of weaknesses and resistances is almost totally accurate as well.
 
 Interestingly, it has also sort of learned a fact of the way the energy costs are arranged.  Many attacks require energy that is the same type as the card, but also use colorless energy (abbreviated to 'c' here) as a placeholder for any energy type.  It is always arranged so that the colorless energy is last - for instance, an attack with one fire and two colorless energy would always be arranged 'f / c / c'.  The network seems to have learned that much, though it does not do a good job of keeping the type of the non-colorless cost the same as the card type.
+
+
+## Conclusions
+There is a great deal of regularity that can be found in the Pokémon TCG.  As the game has been going for nearly 20 years, it has managed to generate a sizable amount of information in that time, but the internals have maintained a level of continuity despite this.  The ability of the neural network to generate semi-sensible cards with relatively little training - and possibly the fact that these cards could all be reliably fit into relatively simple Python objects at all - serves to underline that.
+
+Though it is not as high profile as other TCGs, there are some interesting bits that could be teased out of the Pokémon TCG's cards.  Trying to derive more substantial information than what was presented here would make for an interesting challenge.
